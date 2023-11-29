@@ -1,0 +1,70 @@
+﻿@using HamburgerciProject.Application.Models.DTOs;
+@using X.PagedList;
+@using X.PagedList.Mvc.Core;
+@model IPagedList<CreateSiparisDTO>
+
+@{
+    ViewData["Title"] = "Index";
+
+}
+
+<h1>Siparişler</h1>
+
+
+
+
+<p>
+    <a asp-action="Create">Yeni Sipariş Oluştur</a>
+</p>
+@using (Html.BeginForm())
+{
+    <p>
+        Sipariş ara: @Html.TextBox("deger")
+        <input type="submit" value="Ara" />
+    </p>
+}
+<p>
+    <button type="reset">
+        <a href="Index" style="color:black; text-decoration:none">Yenile</a>
+    </button>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Id
+            </th>
+            <th>
+                İçerik
+            </th>
+            <th>
+                Toplam Tutar
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.Id
+                </td>
+                <td>
+                    @item.İçerik
+                </td>
+                <td>
+                    @item.ToplamTutar
+                </td>
+                <td>
+                    <a asp-action="Delete" asp-route-id="@item.Id" id="DeleteBtn" onclick="return confirm('Silmek istediğinize emin misiniz ?');">Delete</a> |
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<tr>
+    @Html.PagedListPager((IPagedList)Model, p=>Url.Action("Index",new{p}))
+</tr>
+

@@ -1,0 +1,74 @@
+﻿@using HamburgerciProject.Application.Models.DTOs;
+@using X.PagedList;
+@using X.PagedList.Mvc.Core;
+@model IPagedList<MenuDTO>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "_AdminLayout";
+
+}
+
+<h1>Index</h1>
+
+
+
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+@using (Html.BeginForm())
+{
+    <p>
+        Menu ara: @Html.TextBox("deger")
+        <input type="submit" value="Ara" />
+    </p>
+}
+<p>
+    <button type="reset">
+        <a asp-controller="Menu" asp-action="Index" style="color:black; text-decoration:none">Yenile</a>
+    </button>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Menu Resmi
+            </th>
+            <th>
+                Menu Adı
+            </th>
+            <th>
+                Menu Fiyatı
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <img class="img-fluid" src="data:image/jpeg;base64,@(item.ImagePath)" alt=" ">
+
+                </td>
+                <td>
+                    @item.MenuAdi
+                </td>
+                <td>
+                    @item.MenuFiyati
+                </td>
+                <td>
+                    <a asp-action="Delete" asp-route-id="@item.Id" id="DeleteBtn" onclick="return confirm('Silmek istediğinize emin misiniz ?');">Delete</a> |
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<tr>
+    @Html.PagedListPager((IPagedList)Model, p=>Url.Action("Index",new{p}))
+</tr>
+
+
+
+
